@@ -10,6 +10,19 @@ public class AffineMatrices {
 	}
 	
 	private static void initScale(float x, float y, float z) {
+		if(x == 0) 
+			x = 1;
+		if(y == 0) 
+			y = 1;
+		if(z == 0) 
+			z = 1;
+		if(x < 0) 
+			x = Math.abs(1 / x);
+		if(y < 0)
+			y = Math.abs(1 / y);
+		if(z < 0)
+			z = Math.abs(1 / z);
+		
 		m[0][0] = x;	m[0][1] = 0; 	m[0][2] = 0; m[0][3] = 0;
 		m[1][0] = 0;	m[1][1] = y; 	m[1][2] = 0; m[1][3] = 0;
 		m[2][0] = 0;	m[2][1] = 0; 	m[2][2] = z; m[2][3] = 0;
