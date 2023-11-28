@@ -86,9 +86,6 @@ public class AffineMatrices {
 	
 	private static Vector4f transform(Vector4f r)
 	{
-		return new Vector4f(mat.getMatrix()[0][0] * r.getX() + mat.getMatrix()[0][1] * r.getY() + mat.getMatrix()[0][2] * r.getZ() + mat.getMatrix()[0][3] * r.getW(),
-							mat.getMatrix()[1][0] * r.getX() + mat.getMatrix()[1][1] * r.getY() + mat.getMatrix()[1][2] * r.getZ() + mat.getMatrix()[1][3] * r.getW(),
-                			mat.getMatrix()[2][0] * r.getX() + mat.getMatrix()[2][1] * r.getY() + mat.getMatrix()[2][2] * r.getZ() + mat.getMatrix()[2][3] * r.getW(),
-                			mat.getMatrix()[3][0] * r.getX() + mat.getMatrix()[3][1] * r.getY() + mat.getMatrix()[3][2] * r.getZ() + mat.getMatrix()[3][3] * r.getW());
+		return mat.multiply(r);
 	}
 }
