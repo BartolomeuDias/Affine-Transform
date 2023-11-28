@@ -1,6 +1,10 @@
 package AffineTransforms;
 
 import ru.vsu.cs.Math.*;
+/**
+ * Вспомогательный класс для инициализации матриц масштабирования (Scale), поворота (Rotate), перемещения (Translate)
+ * 
+ * */
 public class AffineMatrices {
 	
 	public AffineMatrices() {
@@ -9,6 +13,14 @@ public class AffineMatrices {
 	
 	private static Matrix4f mat = new Matrix4f(new float[4][4]);
 	
+	
+	/**
+	 * Инициализация матрицы увеличения (Scale)
+	 * 
+	 * @param x Величина масштабирования вдоль оси x
+	 * @param y Величина масштабирования вдоль оси y
+	 * @param z Величина масштабирования вдоль оси z
+	 * */
 	private static void initScale(float x, float y, float z) {
 		if(x == 0) 
 			x = 1;
@@ -29,6 +41,14 @@ public class AffineMatrices {
 		mat.getMatrix()[3][0] = 0;	mat.getMatrix()[3][1] = 0; 	mat.getMatrix()[3][2] = 0; mat.getMatrix()[3][3] = 1;
 	}
 	
+	/**
+	 * Инициализация матрицы поворота (Rotate)
+	 * Результирующая матрица представляет собой произведение матриц поворота относительно осей x, y, z соответственно
+	 * 
+	 * @param x Угол поворота вдоль оси x
+	 * @param y Угол поворота вдоль оси y
+	 * @param z Угол поворота вдоль оси z
+	 * */
 	private static void initRotation(float x, float y, float z) {
 		Matrix4f rx = new Matrix4f(new float[4][4]);
 		Matrix4f ry = new Matrix4f(new float[4][4]);
@@ -56,6 +76,13 @@ public class AffineMatrices {
 		mat = rz.multiply(ry.multiply(rx));
 	}
 	
+	/**
+	 * Инициализация матрицы смещения (Translate)
+	 * 
+	 * @param x Величина смещения модели вдоль оси x
+	 * @param y Величина смещения модели вдоль оси y
+	 * @param z Величина смещения модели вдоль оси z
+	 * */
 	private static void initTranslation(float x, float y, float z) {
 		mat.getMatrix()[0][0] = 1;	mat.getMatrix()[0][1] = 0; 	mat.getMatrix()[0][2] = 0; mat.getMatrix()[0][3] = x;
 		mat.getMatrix()[1][0] = 0;	mat.getMatrix()[1][1] = 1; 	mat.getMatrix()[1][2] = 0; mat.getMatrix()[1][3] = y;
@@ -63,6 +90,15 @@ public class AffineMatrices {
 		mat.getMatrix()[3][0] = 0;	mat.getMatrix()[3][1] = 0; 	mat.getMatrix()[3][2] = 0; mat.getMatrix()[3][3] = 1;
 	}
 	
+	/**
+	 * Смещение вершины
+	 * 
+	 * @param vector Вершина, которую мы хотим сместить 
+	 * @param x Величина смещения модели вдоль оси x
+	 * @param y Величина смещения модели вдоль оси y
+	 * @param z Величина смещения модели вдоль оси z
+	 * @return Смещенная вершина
+	 * */
 	protected static Vector3f translate(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initTranslation(x, y, z);
@@ -70,6 +106,15 @@ public class AffineMatrices {
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
+	/**
+	 * Масштабирование вершины
+	 * 
+	 * @param vector Вершина, масштаб которой мы хотим изменить 
+	 * @param x Величина масштабирования модели вдоль оси x
+	 * @param y Величина масштабирования модели вдоль оси y
+	 * @param z Величина масштабирования модели вдоль оси z
+	 * @return Вершина с изменённым масштабом
+	 * */
 	protected static Vector3f scale(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initScale(x, y, z);
@@ -77,6 +122,15 @@ public class AffineMatrices {
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
+	/**
+	 * Поворот вершины
+	 * 
+	 * @param vector Вершина, которую мы хотим повернуть
+	 * @param x Угол поворота модели вдоль оси x
+	 * @param y Угол поворота модели вдоль оси y
+	 * @param z Угол поворота модели вдоль оси z
+	 * @return Вершина, повёрнутая на заданные углы
+	 * */
 	protected static Vector3f rotate(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initRotation(x, y, z);
