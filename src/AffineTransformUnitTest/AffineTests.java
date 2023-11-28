@@ -83,4 +83,18 @@ class AffineTests {
 		Assertions.assertTrue(Math.sqrt(2) - rotatev3f.getY() < eps);
 		Assertions.assertEquals(0, rotatev3f.getZ());
 	}
+	
+	//Texture vertexes
+	@Test
+	void scale2f() {
+		Vector2f v2f = new Vector2f(1, 1);
+		Vector2f scaledv2d = AffineMatrices.scaleT(v2f, 3, 3, 3);
+		
+		System.out.println(scaledv2d.getX());
+		System.out.println(scaledv2d.getY());
+		Assertions.assertEquals(3, scaledv2d.getX());
+		Assertions.assertEquals(3, scaledv2d.getY());
+	}
+	
+	
 }
