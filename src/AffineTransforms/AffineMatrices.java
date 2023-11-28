@@ -138,8 +138,14 @@ public class AffineMatrices {
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
-	private static Vector4f transform(Vector4f r)
+	/**
+	 * Преобразование вершины
+	 * 
+	 * @param v Вершина, которую мы хотим повернуть
+	 * @return Изменённая вершина
+	 * */
+	private static Vector4f transform(Vector4f v)
 	{
-		return mat.multiply(r);
+		return mat.multiply(v);
 	}
 }
