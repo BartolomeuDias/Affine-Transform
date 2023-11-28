@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import AffineTransforms.*;
 import ru.vsu.cs.Math.*;
-class AffineTests {
+class AffineTests extends AffineMatrices{
 	
 	@Test
 	void scale1() {

@@ -63,21 +63,21 @@ public class AffineMatrices {
 		mat.getMatrix()[3][0] = 0;	mat.getMatrix()[3][1] = 0; 	mat.getMatrix()[3][2] = 0; mat.getMatrix()[3][3] = 1;
 	}
 	
-	public static Vector3f translate(Vector3f vector, float x, float y, float z) {
+	protected static Vector3f translate(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initTranslation(x, y, z);
 		current = transform(current);
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
-	public static Vector3f scale(Vector3f vector, float x, float y, float z) {
+	protected static Vector3f scale(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initScale(x, y, z);
 		current = transform(current);
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
-	public static Vector3f rotate(Vector3f vector, float x, float y, float z) {
+	protected static Vector3f rotate(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initRotation(x, y, z);
 		current = transform(current);
