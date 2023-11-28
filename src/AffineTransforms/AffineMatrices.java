@@ -5,8 +5,9 @@ public class AffineMatrices {
 	
 	private static float[][] m = new float[4][4];
 	
+	
 	public AffineMatrices() {
-		
+
 	}
 	
 	private static void initScale(float x, float y, float z) {
@@ -27,6 +28,8 @@ public class AffineMatrices {
 		m[1][0] = 0;	m[1][1] = y; 	m[1][2] = 0; m[1][3] = 0;
 		m[2][0] = 0;	m[2][1] = 0; 	m[2][2] = z; m[2][3] = 0;
 		m[3][0] = 0;	m[3][1] = 0; 	m[3][2] = 0; m[3][3] = 1;
+		
+		System.out.println(Matrices.getDet);
 	}
 	
 	private static void initRotation(float x, float y, float z) {
