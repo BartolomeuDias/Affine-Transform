@@ -3,9 +3,11 @@ package AffineTransforms;
 import ru.vsu.cs.Math.*;
 
 public class AffineTransform {
-//	public AffineTransform() {
-//		
-//	}
+	
+	public AffineTransform() {
+		
+	}
+	
 	public static void affineT(Model model, float x, float y, float z) {
 		
 		//Translate vertex

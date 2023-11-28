@@ -3,6 +3,10 @@ package AffineTransforms;
 import ru.vsu.cs.Math.*;
 public class AffineMatrices {
 	
+	public AffineMatrices() {
+		
+	}
+	
 	private static Matrix4f mat = new Matrix4f(new float[4][4]);
 	
 	private static void initScale(float x, float y, float z) {
@@ -59,46 +63,25 @@ public class AffineMatrices {
 		mat.getMatrix()[3][0] = 0;	mat.getMatrix()[3][1] = 0; 	mat.getMatrix()[3][2] = 0; mat.getMatrix()[3][3] = 1;
 	}
 	
-	public static Vector3f translateVN(Vector3f vector, float x, float y, float z) {
+	public static Vector3f translate(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initTranslation(x, y, z);
 		current = transform(current);
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
-	public static Vector3f scaleVN(Vector3f vector, float x, float y, float z) {
+	public static Vector3f scale(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initScale(x, y, z);
 		current = transform(current);
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
 	}
 	
-	public static Vector3f rotateVN(Vector3f vector, float x, float y, float z) {
+	public static Vector3f rotate(Vector3f vector, float x, float y, float z) {
 		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
 		initRotation(x, y, z);
 		current = transform(current);
 		return new Vector3f(current.getX(), current.getY(), current.getZ());
-	}
-	
-	public static Vector2f translateT(Vector2f vector, float x, float y, float z) {
-		Vector4f current = new Vector4f(vector.getX(), vector.getY(), 0, 1);
-		initTranslation(x, y, z);
-		current = transform(current);
-		return new Vector2f(current.getX(), current.getY());
-	}
-	
-	public static Vector2f scaleT(Vector2f vector, float x, float y, float z) {
-		Vector4f current = new Vector4f(vector.getX(), vector.getY(), 0, 1);
-		initScale(x, y, z);
-		current = transform(current);
-		return new Vector2f(current.getX(), current.getY());
-	}
-	
-	public static Vector2f rotateT(Vector2f vector, float x, float y, float z) {
-		Vector4f current = new Vector4f(vector.getX(), vector.getY(), 0, 1);
-		initRotation(x, y, z);
-		current = transform(current);
-		return new Vector2f(current.getX(), current.getY());
 	}
 	
 	private static Vector4f transform(Vector4f r)
