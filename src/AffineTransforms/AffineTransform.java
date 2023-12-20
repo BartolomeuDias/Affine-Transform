@@ -1,5 +1,8 @@
 package AffineTransforms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.vsu.cs.Math.*;
 
 /**
@@ -8,70 +11,67 @@ import ru.vsu.cs.Math.*;
  * */
 public class AffineTransform {
 	
+	private Matrix4f scale = Matrix4f.createUnitMatrix() ;
+	private Matrix4f rotate = Matrix4f.createUnitMatrix();
+	private Matrix4f translate = Matrix4f.createUnitMatrix();
+	
 	public AffineTransform() {
-		
+
 	}
 	
-	/**
-	 * Аффинное смещение (Translation - T)
-	 * 
-	 * @param model Модель
-	 * @param x Величина смещения модели вдоль оси x
-	 * @param y Величина смещения модели вдоль оси y
-	 * @param z Величина смещения модели вдоль оси z
-	 * */
-	public static void affineT(Model model, float x, float y, float z) {
-		
-		//Translate vertex
-		for(int i = 0; i < model.vertices.size(); i++) {
-			Vector3f vec = model.vertices.get(i);
-			model.vertices.set(i, AffineMatrices.translate(vec, x, y, z));
-		}
+	public Matrix4f getTransformedMatrix() {
+		return translate.multiply(rotate).multiply(scale);
 	}
 	
-	/**
-	 * Аффинное масштабирование (Scale - S)
-	 * 
-	 * @param model Модель
-	 * @param x Величина масштабирования вдоль оси x
-	 * @param y Величина масштабирования вдоль оси y
-	 * @param z Величина масштабирования вдоль оси z
-	 * */
-	public static void affineS(Model model, float x, float y, float z) {
-		
-		//Scale vertex
-		for(int i = 0; i < model.vertices.size(); i++) {
-			Vector3f vec = model.vertices.get(i);
-			model.vertices.set(i, AffineMatrices.scale(vec, x, y, z));
-		}
+	public void setScale(float x, float y, float z) {
+		scale = AffineMatrices.initScale(x, y, z);
 	}
 	
-	/**
-	 * Аффинное вращение (Rotation - R)
-	 * 
-	 * @param model Модель
-	 * @param x Угол поворота вдоль оси x
-	 * @param y Угол поворота вдоль оси y
-	 * @param z Угол поворота вдоль оси z
-	 * */
-	public static void affineR(Model model, float x, float y, float z) {
-		
-		//Rotate vertex
-		for(int i = 0; i < model.vertices.size(); i++) {
-			Vector3f vec = model.vertices.get(i);
-			model.vertices.set(i, AffineMatrices.rotate(vec, x, y, z));
-		}
+	public void setRotate(float x, float y, float z) {
+		rotate = AffineMatrices.initRotation(x, y, z);
 	}
 	
-	/**
-	 * Вспомогательный метод для чтения координат вершин модели
-	 * Может использоваться для отслеживания корректности преобразований
-	 * 
-	 * @param model Модель
-	 * */
-	public static void checkVertexList(Model model) {
-		for (Vector3f vec : model.vertices) {
-			System.out.println(vec.getX() + ";" + vec.getY() + ";" + vec.getZ());
-		}
+	public void setTranslate(float x, float y, float z) {
+		translate = AffineMatrices.initTranslation(x, y, z);
+	}
+	
+	public void setScaleMatrix(Matrix4f scale) {
+		this.scale = scale;
+	}
+	
+	public void setRotateMatrix(Matrix4f rotate) {
+		this.scale = rotate;
+	}
+	
+	public void setTranslateMatrix(Matrix4f translate) {
+		this.translate = translate;
+	}
+	
+	public Matrix4f getScaleMatrix4f() {
+		return scale;
+	}
+	
+	public Matrix4f getRotateMatrix4f() {
+		return rotate;
+	}
+	
+	public Matrix4f getTranslateMatrix4f() {
+		return translate;
+	}
+	
+	public ArrayList<Vector3f> applyTransformToVertices(ArrayList<Vector3f> vertices, Matrix4f transformMatrix){
+		return AffineMatrices.applyTransformToVertices(vertices, transformMatrix);
+	}
+	
+	public void translateModel(Model model) {
+		model.vertices = applyTransformToVertices(model.vertices, getTranslateMatrix4f());
+	}
+	
+	public void scaleModel(Model model) {
+		model.vertices = applyTransformToVertices(model.vertices, getScaleMatrix4f());
+	}
+	
+	public void rotateModel(Model model) {
+		model.vertices = applyTransformToVertices(model.vertices, getRotateMatrix4f());
 	}
 }

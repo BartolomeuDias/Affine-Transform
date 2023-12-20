@@ -1,5 +1,8 @@
 package AffineTransforms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.vsu.cs.Math.*;
 /**
  * Вспомогательный класс для инициализации матриц масштабирования (Scale), поворота (Rotate), перемещения (Translate)
@@ -11,9 +14,6 @@ public class AffineMatrices {
 		
 	}
 	
-	private static Matrix4f mat = new Matrix4f(new float[4][4]);
-	
-	
 	/**
 	 * Инициализация матрицы увеличения (Scale)
 	 * 
@@ -21,24 +21,15 @@ public class AffineMatrices {
 	 * @param y Величина масштабирования вдоль оси y
 	 * @param z Величина масштабирования вдоль оси z
 	 * */
-	private static void initScale(float x, float y, float z) {
-		if(x == 0) 
-			x = 1;
-		if(y == 0) 
-			y = 1;
-		if(z == 0) 
-			z = 1;
-		if(x < 0) 
-			x = Math.abs(1 / x);
-		if(y < 0)
-			y = Math.abs(1 / y);
-		if(z < 0)
-			z = Math.abs(1 / z);
+	public static Matrix4f initScale(float x, float y, float z) {
+		Matrix4f mat = new Matrix4f(new float[4][4]);
 		
 		mat.getMatrix()[0][0] = x;	mat.getMatrix()[0][1] = 0; 	mat.getMatrix()[0][2] = 0; mat.getMatrix()[0][3] = 0;
 		mat.getMatrix()[1][0] = 0;	mat.getMatrix()[1][1] = y; 	mat.getMatrix()[1][2] = 0; mat.getMatrix()[1][3] = 0;
 		mat.getMatrix()[2][0] = 0;	mat.getMatrix()[2][1] = 0; 	mat.getMatrix()[2][2] = z; mat.getMatrix()[2][3] = 0;
 		mat.getMatrix()[3][0] = 0;	mat.getMatrix()[3][1] = 0; 	mat.getMatrix()[3][2] = 0; mat.getMatrix()[3][3] = 1;
+		
+		return mat;
 	}
 	
 	/**
@@ -49,7 +40,7 @@ public class AffineMatrices {
 	 * @param y Угол поворота вдоль оси y
 	 * @param z Угол поворота вдоль оси z
 	 * */
-	private static void initRotation(float x, float y, float z) {
+	public static Matrix4f initRotation(float x, float y, float z) {
 		Matrix4f rx = new Matrix4f(new float[4][4]);
 		Matrix4f ry = new Matrix4f(new float[4][4]);
 		Matrix4f rz = new Matrix4f(new float[4][4]);
@@ -73,7 +64,8 @@ public class AffineMatrices {
 		ry.getMatrix()[2][0] = -(float)Math.sin(y);		ry.getMatrix()[2][1] = 0;						ry.getMatrix()[2][2] = (float)Math.cos(y);		ry.getMatrix()[2][3] = 0;
 		ry.getMatrix()[3][0] = 0;						ry.getMatrix()[3][1] = 0;						ry.getMatrix()[3][2] = 0;						ry.getMatrix()[3][3] = 1;
 		
-		mat = rz.multiply(ry.multiply(rx));
+		return rx.multiply(ry).multiply(rz);
+		
 	}
 	
 	/**
@@ -83,69 +75,27 @@ public class AffineMatrices {
 	 * @param y Величина смещения модели вдоль оси y
 	 * @param z Величина смещения модели вдоль оси z
 	 * */
-	private static void initTranslation(float x, float y, float z) {
+	public static Matrix4f initTranslation(float x, float y, float z) {
+		Matrix4f mat = new Matrix4f(new float[4][4]);
+		
 		mat.getMatrix()[0][0] = 1;	mat.getMatrix()[0][1] = 0; 	mat.getMatrix()[0][2] = 0; mat.getMatrix()[0][3] = x;
 		mat.getMatrix()[1][0] = 0;	mat.getMatrix()[1][1] = 1; 	mat.getMatrix()[1][2] = 0; mat.getMatrix()[1][3] = y;
 		mat.getMatrix()[2][0] = 0;	mat.getMatrix()[2][1] = 0; 	mat.getMatrix()[2][2] = 1; mat.getMatrix()[2][3] = z;
 		mat.getMatrix()[3][0] = 0;	mat.getMatrix()[3][1] = 0; 	mat.getMatrix()[3][2] = 0; mat.getMatrix()[3][3] = 1;
+		
+		return mat;
 	}
 	
-	/**
-	 * Смещение вершины
-	 * 
-	 * @param vector Вершина, которую мы хотим сместить 
-	 * @param x Величина смещения модели вдоль оси x
-	 * @param y Величина смещения модели вдоль оси y
-	 * @param z Величина смещения модели вдоль оси z
-	 * @return Смещенная вершина
-	 * */
-	protected static Vector3f translate(Vector3f vector, float x, float y, float z) {
-		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
-		initTranslation(x, y, z);
-		current = transform(current);
-		return new Vector3f(current.getX(), current.getY(), current.getZ());
-	}
-	
-	/**
-	 * Масштабирование вершины
-	 * 
-	 * @param vector Вершина, масштаб которой мы хотим изменить 
-	 * @param x Величина масштабирования модели вдоль оси x
-	 * @param y Величина масштабирования модели вдоль оси y
-	 * @param z Величина масштабирования модели вдоль оси z
-	 * @return Вершина с изменённым масштабом
-	 * */
-	protected static Vector3f scale(Vector3f vector, float x, float y, float z) {
-		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
-		initScale(x, y, z);
-		current = transform(current);
-		return new Vector3f(current.getX(), current.getY(), current.getZ());
-	}
-	
-	/**
-	 * Поворот вершины
-	 * 
-	 * @param vector Вершина, которую мы хотим повернуть
-	 * @param x Угол поворота модели вдоль оси x
-	 * @param y Угол поворота модели вдоль оси y
-	 * @param z Угол поворота модели вдоль оси z
-	 * @return Вершина, повёрнутая на заданные углы
-	 * */
-	protected static Vector3f rotate(Vector3f vector, float x, float y, float z) {
-		Vector4f current = new Vector4f(vector.getX(), vector.getY(), vector.getZ(), 1);
-		initRotation(x, y, z);
-		current = transform(current);
-		return new Vector3f(current.getX(), current.getY(), current.getZ());
-	}
-	
-	/**
-	 * Преобразование вершины
-	 * 
-	 * @param v Вершина, которую мы хотим повернуть
-	 * @return Изменённая вершина
-	 * */
-	private static Vector4f transform(Vector4f v)
-	{
-		return mat.multiply(v);
+	public static ArrayList<Vector3f> applyTransformToVertices(ArrayList<Vector3f> verticesToTransform, Matrix4f transformMatrix){
+		
+		ArrayList<Vector3f> transformedVertices = new ArrayList<Vector3f>();
+		for(int i = 0; i < verticesToTransform.size(); i++) {
+			Vector3f vertex = verticesToTransform.get(i);
+			Vector4f augmentedVertex = new Vector4f(vertex.getX(), vertex.getY(),vertex.getZ(), 1);
+			Vector4f transformedVertex = transformMatrix.multiply(augmentedVertex);
+			transformedVertices.add(new Vector3f(transformedVertex.getX(),transformedVertex.getY(), transformedVertex.getZ()));
+		}
+		
+		return transformedVertices;
 	}
 }

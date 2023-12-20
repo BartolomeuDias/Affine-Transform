@@ -11,76 +11,84 @@ class AffineTests extends AffineMatrices{
 	
 	@Test
 	void scale1() {
-		Vector3f v3f = new Vector3f(1, 1, 1);
-		Vector3f scaledv3d = AffineMatrices.scale(v3f, 3, 3, 3);
-		Assertions.assertEquals(3, scaledv3d.getX());
-		Assertions.assertEquals(3, scaledv3d.getY());
-		Assertions.assertEquals(3, scaledv3d.getZ());
+		Vector4f v4f = new Vector4f(1, 1, 1,1);
+		Matrix4f scale1 = AffineMatrices.initScale(3, 3, 3);
+		Vector4f scaledv4d = scale1.multiply(v4f);
+		Assertions.assertEquals(3, scaledv4d.getX());
+		Assertions.assertEquals(3, scaledv4d.getY());
+		Assertions.assertEquals(3, scaledv4d.getZ());
 	}
 	
 	@Test
 	void scale2() {
-		Vector3f v3f = new Vector3f(5, 7, 9);
-		Vector3f scaledv3d = AffineMatrices.scale(v3f, 0, 0, 0);
-		Assertions.assertEquals(5, scaledv3d.getX());
-		Assertions.assertEquals(7, scaledv3d.getY());
-		Assertions.assertEquals(9, scaledv3d.getZ());
+		Vector4f v4f = new Vector4f(6, 7, 9,1);
+		Matrix4f scale2 = AffineMatrices.initScale(2, 3, 9);
+		Vector4f scaledv4d = scale2.multiply(v4f);
+		Assertions.assertEquals(12, scaledv4d.getX());
+		Assertions.assertEquals(21, scaledv4d.getY());
+		Assertions.assertEquals(81, scaledv4d.getZ());
 	}
 	
 	@Test
 	void scale3() {
-		Vector3f v3f = new Vector3f(5, 8, 9);
-		Vector3f scaledv3d = AffineMatrices.scale(v3f, -2, -4, -3);
-		Assertions.assertEquals(2.5, scaledv3d.getX());
-		Assertions.assertEquals(2, scaledv3d.getY());
-		Assertions.assertEquals(3, scaledv3d.getZ());
+		Vector4f v4f = new Vector4f(5, 8, 9,1);
+		Matrix4f scale3 = AffineMatrices.initScale((float)Math.pow(2, -1), (float)Math.pow(4, -1), (float)Math.pow(3, -1));
+		Vector4f scaledv4d = scale3.multiply(v4f);
+		Assertions.assertEquals(2.5, scaledv4d.getX());
+		Assertions.assertEquals(2, scaledv4d.getY());
+		Assertions.assertEquals(3, scaledv4d.getZ());
 	}
 	
 	@Test
 	void translate1() {
-		Vector3f v3f = new Vector3f(1, 1, 1);
-		Vector3f translatedv3f = AffineMatrices.translate(v3f, 15, 8, -3);
-		Assertions.assertEquals(16, translatedv3f.getX());
-		Assertions.assertEquals(9, translatedv3f.getY());
-		Assertions.assertEquals(-2, translatedv3f.getZ());
+		Vector4f v4f = new Vector4f(1, 1, 1,1);
+		Matrix4f translate1 = AffineMatrices.initTranslation(15, 8, -3);
+		Vector4f translatedv4f = translate1.multiply(v4f);
+		Assertions.assertEquals(16, translatedv4f.getX());
+		Assertions.assertEquals(9, translatedv4f.getY());
+		Assertions.assertEquals(-2, translatedv4f.getZ());
 	}
 	
 	@Test
 	void translate2() {
-		Vector3f v3f = new Vector3f(1, 1, 1);
-		Vector3f translatedv3f = AffineMatrices.translate(v3f, 0, 10, -1);
-		Assertions.assertEquals(1, translatedv3f.getX());
-		Assertions.assertEquals(11, translatedv3f.getY());
-		Assertions.assertEquals(0, translatedv3f.getZ());
+		Vector4f v4f = new Vector4f(1, 1, 1,1);
+		Matrix4f translate2 = AffineMatrices.initTranslation(0, 10, -1);
+		Vector4f translatedv4f = translate2.multiply(v4f);
+		Assertions.assertEquals(1, translatedv4f.getX());
+		Assertions.assertEquals(11, translatedv4f.getY());
+		Assertions.assertEquals(0, translatedv4f.getZ());
 	}
 	
 	@Test
 	void rotateZ() {
 		double eps = 0.00001;
-		Vector3f v3f = new Vector3f(1, 1, 1);
-		Vector3f rotatev3f = AffineMatrices.rotate(v3f, 0, 0, 45);
-		Assertions.assertTrue(Math.sqrt(2) - rotatev3f.getX() < eps);
-		Assertions.assertEquals(0, rotatev3f.getY());
-		Assertions.assertEquals(1, rotatev3f.getZ());
+		Vector4f v4f = new Vector4f(1, 1, 1,1);
+		Matrix4f rotate1 = AffineMatrices.initRotation(0, 0, 45);
+		Vector4f rotatev4f = rotate1.multiply(v4f);
+		Assertions.assertTrue(Math.sqrt(2) - rotatev4f.getX() < eps);
+		Assertions.assertEquals(0, rotatev4f.getY());
+		Assertions.assertEquals(1, rotatev4f.getZ());
 	}
 	
 	@Test
 	void rotateY() {
 		double eps = 0.00001;
-		Vector3f v3f = new Vector3f(1, 1, 1);
-		Vector3f rotatev3f = AffineMatrices.rotate(v3f, 0, 45, 0);
-		Assertions.assertTrue(Math.sqrt(2) - rotatev3f.getX() < eps);
-		Assertions.assertEquals(1, rotatev3f.getY());
-		Assertions.assertEquals(0, rotatev3f.getZ());
+		Vector4f v4f = new Vector4f(1, 1, 1,1);
+		Matrix4f rotate2 = AffineMatrices.initRotation(0, 45, 0);
+		Vector4f rotatev4f = rotate2.multiply(v4f);
+		Assertions.assertTrue(Math.sqrt(2) - rotatev4f.getX() < eps);
+		Assertions.assertEquals(1, rotatev4f.getY());
+		Assertions.assertEquals(0, rotatev4f.getZ());
 	}
 	
 	@Test
 	void rotateX() {
 		double eps = 0.00001;
-		Vector3f v3f = new Vector3f(1, 1, 1);
-		Vector3f rotatev3f = AffineMatrices.rotate(v3f, 45, 0, 0);
-		Assertions.assertEquals(1, rotatev3f.getX());
-		Assertions.assertTrue(Math.sqrt(2) - rotatev3f.getY() < eps);
-		Assertions.assertEquals(0, rotatev3f.getZ());
+		Vector4f v4f = new Vector4f(1, 1, 1,1);
+		Matrix4f rotate2 = AffineMatrices.initRotation(45, 0, 0);
+		Vector4f rotatev4f = rotate2.multiply(v4f);
+		Assertions.assertEquals(1, rotatev4f.getX());
+		Assertions.assertTrue(Math.sqrt(2) - rotatev4f.getY() < eps);
+		Assertions.assertEquals(0, rotatev4f.getZ());
 	}
 }
